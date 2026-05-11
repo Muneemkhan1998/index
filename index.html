@@ -4,13 +4,514 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Muneem Khan — IT Network & Systems Engineer</title>
-
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a14;
+    --surface: #0d1526;
+    --surface2: #111e35;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: rgba(56,189,248,0.12);
+    --border2: rgba(56,189,248,0.25);
+    --glow: rgba(56,189,248,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<!-- External CSS -->
-<link rel="stylesheet" href="style.css">
+  html { scroll-behavior: smooth; }
 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Glow orbs */
+  .orb1, .orb2 {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .orb1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -200px; }
+  .orb2 { width: 500px; height: 500px; background: var(--accent2); bottom: -150px; left: -150px; animation-delay: -6s; }
+  @keyframes drift { from { transform: translate(0,0); } to { transform: translate(30px, 30px); } }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(6,10,20,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem;
+    color: var(--accent);
+    letter-spacing: .05em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: .8rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .05em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* LAYOUT */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0 60px;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent3);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--accent3); }
+  .hero-name {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 1rem;
+    animation: fadeUp .6s .1s ease both;
+  }
+  .hero-name .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-role {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-weight: 400;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 2.5rem;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .contact-chip {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .45rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    font-size: .78rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color .2s, background .2s;
+  }
+  .contact-chip:hover { border-color: var(--accent); background: rgba(56,189,248,0.06); }
+  .contact-chip .icon { color: var(--accent); font-size: .85rem; }
+  .hero-summary {
+    max-width: 540px;
+    font-size: .95rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .hero-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp .6s .5s ease both;
+  }
+  .avatar-ring {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    position: relative;
+  }
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d1526, #1a2a4a);
+    color: var(--accent);
+    letter-spacing: -2px;
+  }
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .4rem 1rem;
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.3);
+    border-radius: 100px;
+    font-size: .72rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent3);
+  }
+  .dot-pulse {
+    width: 8px; height: 8px;
+    background: var(--accent3);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent);
+    opacity: .6;
+  }
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -.5px;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+
+  /* EXPERIENCE TIMELINE */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: .4rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 10px var(--accent);
+    transform: translateX(-4.5px);
+  }
+  .timeline-dot.current {
+    background: var(--accent3);
+    box-shadow: 0 0 12px var(--accent3);
+    animation: pulse 2s ease infinite;
+  }
+  .job-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color .25s, transform .25s;
+    cursor: default;
+  }
+  .job-card:hover { border-color: var(--border2); transform: translateX(6px); }
+  .job-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: .5rem;
+  }
+  .job-company { font-size: 1.1rem; font-weight: 700; }
+  .job-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: var(--accent);
+    background: rgba(56,189,248,0.08);
+    border: 1px solid var(--border2);
+    padding: .3rem .75rem;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .job-period.current { color: var(--accent3); border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.06); }
+  .job-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent2);
+    margin-bottom: 1rem;
+  }
+  .job-desc { font-size: .875rem; color: #94a3b8; line-height: 1.8; }
+
+  /* EDUCATION */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: border-color .25s, transform .5s ease, opacity .5s ease;
+  }
+  .edu-card.visible { opacity: 1; transform: translateY(0); }
+  .edu-card:hover { border-color: var(--border2); }
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 16px 16px 0 0;
+  }
+  .edu-level {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+  .edu-degree { font-size: .95rem; font-weight: 700; margin-bottom: .25rem; }
+  .edu-school { font-size: .8rem; color: var(--muted); margin-bottom: .25rem; }
+  .edu-year { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--accent2); margin-bottom: .75rem; }
+  .edu-spec { font-size: .78rem; color: #64748b; line-height: 1.6; }
+  .edu-project {
+    margin-top: .75rem;
+    font-size: .75rem;
+    color: var(--accent3);
+    font-family: 'JetBrains Mono', monospace;
+    padding: .3rem .6rem;
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* SKILLS */
+  .skills-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .skill-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .skill-group-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .skill-tag {
+    font-size: .75rem;
+    padding: .35rem .8rem;
+    border-radius: 100px;
+    font-weight: 500;
+    transition: transform .15s;
+  }
+  .skill-tag:hover { transform: scale(1.05); }
+  .tag-blue { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: #7dd3fc; }
+  .tag-purple { background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.25); color: #a5b4fc; }
+  .tag-green { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: #6ee7b7; }
+  .tag-amber { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25); color: #fcd34d; }
+
+  /* CERTS */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: .75rem;
+  }
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: .8rem;
+    transition: border-color .2s, background .2s;
+    opacity: 0;
+    transform: scale(.95);
+    transition: border-color .2s, background .2s, opacity .4s ease, transform .4s ease;
+  }
+  .cert-card.visible { opacity: 1; transform: scale(1); }
+  .cert-card:hover { border-color: var(--border2); background: var(--surface2); }
+  .cert-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .7rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+  }
+  .ci-blue { background: rgba(56,189,248,0.15); color: var(--accent); }
+  .ci-purple { background: rgba(129,140,248,0.15); color: var(--accent2); }
+  .ci-green { background: rgba(52,211,153,0.15); color: var(--accent3); }
+  .ci-amber { background: rgba(251,191,36,0.15); color: #fcd34d; }
+  .cert-name { font-size: .78rem; color: var(--text); line-height: 1.4; }
+
+  /* ABOUT/EXTRA */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .info-card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .lang-pills { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .lang-pill {
+    padding: .5rem 1.25rem;
+    background: rgba(129,140,248,0.1);
+    border: 1px solid rgba(129,140,248,0.2);
+    border-radius: 100px;
+    font-size: .85rem;
+    color: #a5b4fc;
+    font-weight: 500;
+  }
+  .dob-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .9rem;
+    color: var(--text);
+  }
+  .location-text { font-size: .88rem; color: #94a3b8; line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-badge { display: none; }
+    .skills-section { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 1rem; }
+    .container { padding: 0 1.25rem; }
+  }
+</style>
 </head>
 <body>
 
@@ -29,15 +530,304 @@
   </ul>
 </nav>
 
-<!-- ⚠️ Yahan se tumhara FULL HTML same rahega -->
-<!-- (Hero, Experience, Education, Skills, etc — kuch change nahi karna) -->
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">Available for opportunities</div>
+        <h1 class="hero-name">Muneem<br><span class="highlight">Khan</span></h1>
+        <p class="hero-role">IT Network &amp; Systems Engineer · Cybersecurity Specialist</p>
+        <div class="hero-contacts">
+          <a href="mailto:muneemkhan1998@gmail.com" class="contact-chip">
+            <span class="icon">✉</span> muneemkhan1998@gmail.com
+          </a>
+          <a href="tel:+923151441636" class="contact-chip">
+            <span class="icon">✆</span> +92-315-1441636
+          </a>
+          <span class="contact-chip">
+            <span class="icon">⌖</span> Karachi, Pakistan
+          </span>
+        </div>
+        <p class="hero-summary">
+          Dedicated IT professional with deep expertise in network infrastructure, system administration, and cybersecurity. From server rooms to security operations — building reliable, secure systems that keep organizations running.
+        </p>
+      </div>
+      <div class="hero-badge">
+        <div class="avatar-ring">
+          <div class="avatar-inner">MK</div>
+        </div>
+        <div class="status-badge">
+          <div class="dot-pulse"></div>
+          Currently Employed
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);text-align:center;line-height:1.7;">
+          4+ Years Experience<br>20+ Certifications<br>MSc Aerospace
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Work Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot current"></div>
+        <div class="job-card">
+          <div class="job-top">
+            <span class="job-company">Interlink Multi Media (GEO JANG Group)</span>
+            <span class="job-period current">Feb 2025 – Present</span>
+          </div>
+          <div class="job-role">System Support Engineer</div>
+          <p class="job-desc">Providing technical support for computer systems and IT infrastructure — installation, configuration, maintenance and troubleshooting across Windows, Linux, and macOS. Diagnosing hardware, software and network issues. Managing user accounts, access permissions, security patches, data backup and recovery. ESXI Server management, network connectivity support, vendor coordination, and IT policy enforcement.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card">
+          <div class="job-top">
+            <span class="job-company">Cybertron Labs</span>
+            <span class="job-period">Dec 2024 – Dec 2025</span>
+          </div>
+          <div class="job-role">IT Specialist</div>
+          <p class="job-desc">Network troubleshooting, static &amp; dynamic IP binding, ADDS &amp; DNS management, Hyper-V and server installation. Hardware diagnostics covering drives, RAM, GPUs and boards. RJ45 cable fabrication and testing, CCTV camera installation, remote access configuration, dial pad setup, and daily system maintenance.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card">
+          <div class="job-top">
+            <span class="job-company">YouExcel Training Institute</span>
+            <span class="job-period">Mar 2023 – Feb 2024</span>
+          </div>
+          <div class="job-role">IT Admin Executive</div>
+          <p class="job-desc">Full computer lab lifecycle management — setup, maintenance, and troubleshooting. Multi-OS deployment (Windows, Linux, macOS), firewall security rule configuration, router &amp; Ubiquiti access point management. LMS portal administration including student/staff accounts, access permissions, and password resets. Hardware procurement, malware remediation, and printer/scanner management.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card">
+          <div class="job-top">
+            <span class="job-company">Pakistan Legal United Society</span>
+            <span class="job-period">Feb 2022 – Nov 2022</span>
+          </div>
+          <div class="job-role">IT Admin / Office Assistant</div>
+          <p class="job-desc">Data entry operations, document control, office asset management. Network connection setup and troubleshooting, printer network configuration, switch configuration, and Wi-Fi router/access point management.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-level">Postgraduate</div>
+        <div class="edu-degree">MSc Aerospace</div>
+        <div class="edu-school">University of Karachi</div>
+        <div class="edu-year">Dec 2023 – Jan 2025</div>
+        <div class="edu-spec">Sat Com · Data Com · Machine Learning · IoT · Cybersecurity</div>
+        <div class="edu-project">▶ WiFi Jammer (Final Year Project)</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Undergraduate</div>
+        <div class="edu-degree">BSc Hons Aerospace</div>
+        <div class="edu-school">University of Karachi</div>
+        <div class="edu-year">Jan 2021 – Dec 2023</div>
+        <div class="edu-spec">C++ · Python · Machine Learning · Network Security · IoT · GNSS · Cybersecurity</div>
+        <div class="edu-project">▶ Python Website Development</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Diploma</div>
+        <div class="edu-degree">D.A.E — IT &amp; Computer Engineering</div>
+        <div class="edu-school">Avid Institute of Management &amp; Technology</div>
+        <div class="edu-year">Aug 2018 – Nov 2020</div>
+        <div class="edu-spec">IT Engineering · Programming Languages · Network Topologies · Computer Hardware &amp; Software</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Secondary</div>
+        <div class="edu-degree">Matric — Computer Science</div>
+        <div class="edu-school">Mak Way Grammar School</div>
+        <div class="edu-year">Jan 2015 – Nov 2016</div>
+        <div class="edu-spec">Computer Science Fundamentals</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Technical Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-section">
+      <div class="skill-group">
+        <div class="skill-group-title">Networking &amp; Infrastructure</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-blue">Server Installation</span>
+          <span class="skill-tag tag-blue">Firewall Config</span>
+          <span class="skill-tag tag-blue">LAN / RJ45 Cabling</span>
+          <span class="skill-tag tag-blue">Router &amp; Switches</span>
+          <span class="skill-tag tag-blue">Ubiquiti AP</span>
+          <span class="skill-tag tag-blue">VLAN &amp; Trunk Mode</span>
+          <span class="skill-tag tag-blue">ADDS &amp; DNS</span>
+          <span class="skill-tag tag-blue">Group Policy</span>
+          <span class="skill-tag tag-blue">Hyper-V / ESXI</span>
+          <span class="skill-tag tag-blue">CCTV Installation</span>
+          <span class="skill-tag tag-blue">Remote Access</span>
+          <span class="skill-tag tag-blue">RAID Setup</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Cybersecurity</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-purple">SIEM (WAZUH)</span>
+          <span class="skill-tag tag-purple">Kali Linux</span>
+          <span class="skill-tag tag-purple">Burp Suite</span>
+          <span class="skill-tag tag-purple">Penetration Testing</span>
+          <span class="skill-tag tag-purple">Symantec Endpoint</span>
+          <span class="skill-tag tag-purple">Security Fundamentals</span>
+          <span class="skill-tag tag-purple">Offensive Security</span>
+          <span class="skill-tag tag-purple">Network Security</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Operating Systems</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-green">Windows Server</span>
+          <span class="skill-tag tag-green">Ubuntu Linux</span>
+          <span class="skill-tag tag-green">Kali Linux</span>
+          <span class="skill-tag tag-green">macOS</span>
+          <span class="skill-tag tag-green">Multi-OS Deployment</span>
+          <span class="skill-tag tag-green">OS Troubleshooting</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Programming &amp; Cloud</div>
+        <div class="skill-tags">
+          <span class="skill-tag tag-amber">Python</span>
+          <span class="skill-tag tag-amber">C++</span>
+          <span class="skill-tag tag-amber">MS Azure 104</span>
+          <span class="skill-tag tag-amber">MS Azure 500</span>
+          <span class="skill-tag tag-amber">IoT</span>
+          <span class="skill-tag tag-amber">Machine Learning</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cert-icon ci-blue">CI</div><div class="cert-name">Cisco Certified Network Associate (CCNA)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-purple">CE</div><div class="cert-name">Certified Ethical Hacking (CEH)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">AZ</div><div class="cert-name">MS Azure 104</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">AZ</div><div class="cert-name">MS Azure Engineer 500</div></div>
+      <div class="cert-card"><div class="cert-icon ci-green">WS</div><div class="cert-name">Windows Server Administrator (MCSA)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">CO</div><div class="cert-name">Cisco Cyber OPS</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">CN</div><div class="cert-name">Cisco Network Security</div></div>
+      <div class="cert-card"><div class="cert-icon ci-purple">CS</div><div class="cert-name">Cybersecurity (CS)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-green">IoT</div><div class="cert-name">Internet of Things (IoT)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-amber">OP</div><div class="cert-name">OPSWAT (ICIP)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-purple">OS</div><div class="cert-name">Offensive Security Control (OSC)</div></div>
+      <div class="cert-card"><div class="cert-icon ci-purple">PT</div><div class="cert-name">Intro to Penetration Testing</div></div>
+      <div class="cert-card"><div class="cert-icon ci-purple">IS</div><div class="cert-name">Intro to Cyber Security</div></div>
+      <div class="cert-card"><div class="cert-icon ci-amber">OP</div><div class="cert-name">OPSWAT Cybersecurity Fundamentals</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">IBM</div><div class="cert-name">IBM Computer Network Security</div></div>
+      <div class="cert-card"><div class="cert-icon ci-green">GC</div><div class="cert-name">Google Cybersecurity</div></div>
+      <div class="cert-card"><div class="cert-icon ci-green">GI</div><div class="cert-name">Google IT Support</div></div>
+      <div class="cert-card"><div class="cert-icon ci-green">GT</div><div class="cert-name">Google Technical Support</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">IBM</div><div class="cert-name">IBM OS: Administration &amp; Security</div></div>
+      <div class="cert-card"><div class="cert-icon ci-blue">NC</div><div class="cert-name">Computer Networks &amp; Communication</div></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">About</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="info-card">
+        <div class="info-card-title">Languages</div>
+        <div class="lang-pills">
+          <span class="lang-pill">Urdu</span>
+          <span class="lang-pill">English</span>
+          <span class="lang-pill">Pashto</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Personal Details</div>
+        <div style="display:flex;flex-direction:column;gap:.75rem;">
+          <div>
+            <div style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:.25rem;">DATE OF BIRTH</div>
+            <div class="dob-text">12 September 1998</div>
+          </div>
+          <div>
+            <div style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:.25rem;">LOCATION</div>
+            <div class="location-text">Street 14-A, Block-T B/680 Nusrat Bhutto Colony<br>North Nazimabad, Karachi — 74700</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <footer>
-  <span style="color:var(--accent);">Muneem Khan</span> · IT Network & Systems Engineer
+  <span style="color:var(--accent);">Muneem Khan</span> · IT Network &amp; Systems Engineer · Karachi, Pakistan · muneemkhan1998@gmail.com
 </footer>
 
-<!-- External JS -->
-<script src="script.js"></script>
+<script>
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
 
+  document.querySelectorAll('.timeline-item, .edu-card, .cert-card').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.07) + 's';
+    observer.observe(el);
+  });
+
+  // Smooth nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
 </body>
 </html>
