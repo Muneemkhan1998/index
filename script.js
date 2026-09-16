@@ -1,4 +1,4 @@
-// Intersection Observer
+// Intersection Observer for Smooth Fade-in Animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -7,19 +7,22 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.timeline-item, .edu-card, .cert-card').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.07) + 's';
+// Observe Timeline and Cert Cards
+document.querySelectorAll('.timeline-item, .cert-card').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.05) + 's';
   observer.observe(el);
 });
 
-// Nav highlight
+// Navigation Highlight on Scroll
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 
 window.addEventListener('scroll', () => {
   let current = '';
   sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    if (window.scrollY >= s.offsetTop - 120) {
+      current = s.id;
+    }
   });
 
   navLinks.forEach(a => {
